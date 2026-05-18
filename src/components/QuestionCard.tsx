@@ -1,5 +1,6 @@
 import { CheckCircle2, XCircle } from "lucide-react";
 import type { Question, QuizResponse } from "../types";
+import { getQuestionDisplayPrompt, getQuestionVisualTitle, getTextSample } from "../utils/questionDisplay";
 import ImageWithAttribution from "./ImageWithAttribution";
 
 type QuestionCardProps = {
@@ -13,6 +14,9 @@ type QuestionCardProps = {
 
 const QuestionCard = ({ question, response, onAnswer, onNext, index, total }: QuestionCardProps) => {
   const answered = Boolean(response);
+  const displayPrompt = getQuestionDisplayPrompt(question);
+  const visualTitle = getQuestionVisualTitle(question);
+  const textSample = getTextSample(question);
 
   return (
     <div className="glass rounded-lg p-4 sm:p-6">
@@ -22,8 +26,14 @@ const QuestionCard = ({ question, response, onAnswer, onNext, index, total }: Qu
         </div>
         <div className="rounded bg-white/10 px-2 py-1 text-xs text-slate-300">D{question.difficulty}</div>
       </div>
-      {question.imageSource ? <ImageWithAttribution source={question.imageSource} title={question.prompt} className="mb-5" /> : null}
-      <h2 className="font-display text-2xl font-bold sm:text-3xl">{question.prompt}</h2>
+      {question.imageSource ? <ImageWithAttribution source={question.imageSource} title={visualTitle} className="mb-5" /> : null}
+      {textSample ? (
+        <div className="mb-5 rounded-lg border border-white/10 bg-night/70 p-6">
+          <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Text sample</div>
+          <div className="mt-3 font-display text-4xl font-black text-white">{textSample}</div>
+        </div>
+      ) : null}
+      <h2 className="font-display text-2xl font-bold sm:text-3xl">{displayPrompt}</h2>
       <div className="mt-5 grid gap-3 sm:grid-cols-2">
         {question.answers.map((answer) => {
           const isSelected = response?.selectedAnswer === answer.id;
