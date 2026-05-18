@@ -12,8 +12,8 @@ const SourceAttribution = ({ source, compact = false }: SourceAttributionProps) 
     <div className={compact ? "text-[10px] text-slate-400" : "text-xs text-slate-400"}>
       <span className="uppercase tracking-[0.16em] text-slate-500">{source.sourceType}</span>
       <span className="mx-2 text-slate-600">/</span>
-      {source.sourceUrl ? (
-        <a href={source.sourceUrl} target="_blank" rel="noreferrer" className="text-slate-300 underline decoration-slate-600">
+      {source.referenceUrl || source.sourceUrl ? (
+        <a href={source.referenceUrl ?? source.sourceUrl} target="_blank" rel="noreferrer" className="text-slate-300 underline decoration-slate-600">
           {source.attribution}
         </a>
       ) : (

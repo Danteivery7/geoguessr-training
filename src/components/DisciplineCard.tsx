@@ -5,6 +5,7 @@ import ProgressRing from "./ProgressRing";
 type DisciplineCardProps = {
   discipline: Discipline & { progress?: number };
   onOpen?: () => void;
+  selected?: boolean;
 };
 
 const iconFor = (name: string) => {
@@ -12,7 +13,7 @@ const iconFor = (name: string) => {
   return Icon;
 };
 
-const DisciplineCard = ({ discipline, onOpen }: DisciplineCardProps) => {
+const DisciplineCard = ({ discipline, onOpen, selected = false }: DisciplineCardProps) => {
   const Icon = iconFor(discipline.icon);
   const progress = discipline.progress ?? 0;
 
@@ -20,7 +21,9 @@ const DisciplineCard = ({ discipline, onOpen }: DisciplineCardProps) => {
     <button
       type="button"
       onClick={onOpen}
-      className="glass hover-lift group rounded-lg p-5 text-left focus:outline-none focus:ring-2 focus:ring-signal/60"
+      className={`glass hover-lift group rounded-lg p-5 text-left focus:outline-none focus:ring-2 focus:ring-signal/60 ${
+        selected ? "border-signal/60 bg-signal/10" : ""
+      }`}
     >
       <div className="flex items-start justify-between gap-4">
         <div>
@@ -36,6 +39,12 @@ const DisciplineCard = ({ discipline, onOpen }: DisciplineCardProps) => {
         <div className="h-full rounded-full" style={{ width: `${progress}%`, backgroundColor: discipline.color }} />
       </div>
       <div className="mt-4 flex flex-wrap gap-2">
+        <span
+          className="rounded px-2 py-1 text-xs font-bold"
+          style={{ backgroundColor: `${discipline.color}22`, color: discipline.color }}
+        >
+          Open discipline
+        </span>
         {discipline.tags.slice(0, 3).map((tag) => (
           <span key={tag} className="rounded bg-white/10 px-2 py-1 text-xs text-slate-300">
             {tag}

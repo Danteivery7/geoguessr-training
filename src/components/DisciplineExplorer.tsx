@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { ListChecks, Play, Target } from "lucide-react";
 import type { Lesson, ProgressState } from "../types";
 import { categories } from "../data/categories";
 import { disciplines } from "../data/disciplines";
@@ -59,10 +60,67 @@ const DisciplineExplorer = ({
           <DisciplineCard
             key={discipline.id}
             discipline={discipline}
+            selected={discipline.id === selected.id}
             onOpen={() => setSelectedDisciplineId(discipline.id)}
           />
         ))}
       </div>
+      <section className="glass rounded-lg p-5">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <div className="text-xs uppercase tracking-[0.22em] text-signal">Selected discipline</div>
+            <h2 className="font-display text-4xl font-black">{selected.title}</h2>
+            <p className="mt-2 max-w-3xl text-sm text-slate-400">
+              These lessons, category drills, and discipline tests are the exact things that move this discipline's progress.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() =>
+              onStartQuiz(
+                `${selected.title} Discipline Test`,
+                getQuestionsByFilters({ disciplineId: selected.id, count: 10, closeCountryMode: true })
+              )
+            }
+            className="inline-flex items-center gap-2 rounded bg-signal px-4 py-3 font-bold text-night"
+          >
+            <Play size={16} /> Start discipline test
+          </button>
+        </div>
+        <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+          {disciplineCategories.map((category) => {
+            const lessonCount = disciplineLessons.filter((lesson) => lesson.categoryId === category.id).length;
+            const questionCount = questions.filter((question) => question.categoryId === category.id).length;
+            return (
+              <article key={category.id} className="rounded-lg border border-white/10 bg-white/[0.04] p-4">
+                <div className="flex items-start gap-3">
+                  <div className="rounded bg-white/10 p-2 text-signal">
+                    <ListChecks size={18} />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">{category.title}</h3>
+                    <p className="mt-1 text-xs text-slate-400">
+                      {lessonCount} lessons / {questionCount || "starter"} questions
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() =>
+                    onStartQuiz(
+                      `${category.title} Drill`,
+                      getQuestionsByFilters({ disciplineId: selected.id, categoryId: category.id, count: 8, closeCountryMode: true })
+                    )
+                  }
+                  className="mt-4 inline-flex items-center gap-2 rounded border border-white/10 px-3 py-2 text-sm font-semibold text-slate-100"
+                >
+                  <Target size={15} /> Start category drill
+                </button>
+              </article>
+            );
+          })}
+        </div>
+      </section>
       <section className="grid gap-5 xl:grid-cols-[1fr_360px]">
         <div>
           <div className="mb-3 flex items-center justify-between">

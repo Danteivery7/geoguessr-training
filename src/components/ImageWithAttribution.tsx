@@ -1,4 +1,5 @@
 import type { ImageSource } from "../types";
+import { resolveRealImageSource } from "../data/realImageSources";
 import SourceAttribution from "./SourceAttribution";
 
 type ImageWithAttributionProps = {
@@ -139,20 +140,22 @@ const StaticTrainingVisual = ({ source, title }: { source?: ImageSource; title: 
 };
 
 const ImageWithAttribution = ({ source, title = "Static training visual", className = "" }: ImageWithAttributionProps) => {
-  const isPlaceholder = !source || source.sourceType === "generatedPlaceholder";
-  const canRenderImage = source?.sourceUrl && !isPlaceholder && isBundledAssetUrl(source.sourceUrl);
+  const resolvedSource = resolveRealImageSource(source, title);
+  const isPlaceholder = !resolvedSource || resolvedSource.sourceType === "generatedPlaceholder";
+  const canRenderImage =
+    resolvedSource?.sourceUrl && !isPlaceholder && isBundledAssetUrl(resolvedSource.sourceUrl);
 
   return (
     <figure className={`overflow-hidden rounded-lg border border-white/10 bg-ink ${className}`}>
       <div className="relative min-h-[230px] overflow-hidden bg-grid bg-[length:34px_34px]">
         {canRenderImage ? (
-          <img src={source.sourceUrl} alt={title} className="h-full min-h-[230px] w-full object-cover" />
+          <img src={resolvedSource.sourceUrl} alt={title} className="h-full min-h-[230px] w-full object-cover" />
         ) : (
-          <StaticTrainingVisual source={source} title={title} />
+          <StaticTrainingVisual source={resolvedSource} title={title} />
         )}
       </div>
       <figcaption className="border-t border-white/10 p-3">
-        <SourceAttribution source={source} compact />
+        <SourceAttribution source={resolvedSource} compact />
       </figcaption>
     </figure>
   );

@@ -12,6 +12,7 @@ export interface ImageSource {
   attribution: string;
   license: string;
   sourceUrl?: string;
+  referenceUrl?: string;
   apiReference?: string;
   country: string;
   clueTags: string[];
@@ -209,6 +210,7 @@ export interface AssetRecord {
   attribution: string;
   license: string;
   sourceUrl?: string;
+  referenceUrl?: string;
   apiReference?: string;
   clueExplanation: string;
   correctAnswer: string;
