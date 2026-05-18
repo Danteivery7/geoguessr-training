@@ -4,6 +4,7 @@ import {
   BookOpen,
   Boxes,
   Brain,
+  Clapperboard,
   Compass,
   Flag,
   Languages,
@@ -29,6 +30,7 @@ import CountryProfile from "./components/CountryProfile";
 import CustomTestBuilder from "./components/CustomTestBuilder";
 import Dashboard from "./components/Dashboard";
 import DisciplineExplorer from "./components/DisciplineExplorer";
+import HongKongSpawns from "./components/HongKongSpawns";
 import MapFinder from "./components/MapFinder";
 import ProfileSelect from "./components/ProfileSelect";
 import ProgressStats from "./components/ProgressStats";
@@ -38,6 +40,7 @@ import Settings from "./components/Settings";
 
 type RouteId =
   | "dashboard"
+  | "hong-kong-spawns"
   | "disciplines"
   | "world-map"
   | "road-signs"
@@ -52,6 +55,7 @@ type RouteId =
 
 const navItems: Array<{ id: RouteId; label: string; icon: typeof Compass }> = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { id: "hong-kong-spawns", label: "Hong Kong Spawns", icon: Clapperboard },
   { id: "disciplines", label: "Disciplines", icon: Compass },
   { id: "world-map", label: "World Map Trainer", icon: Map },
   { id: "road-signs", label: "Road & Sign Finder", icon: Signpost },
@@ -178,6 +182,8 @@ const App = () => {
     if (route === "dashboard") {
       return <Dashboard profile={activeProfile} progress={progressApi.progress} onStartQuiz={startQuiz} onNavigate={navigate} />;
     }
+
+    if (route === "hong-kong-spawns") return <HongKongSpawns />;
 
     if (route === "disciplines") {
       return (

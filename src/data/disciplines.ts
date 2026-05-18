@@ -3,6 +3,15 @@ import { getCategoriesForDiscipline } from "./categories";
 
 export const disciplines: Discipline[] = [
   {
+    id: "hong-kong-spawns",
+    title: "Hong Kong Spawns",
+    description: "A growing local media wall for Hong Kong spawn clips and goofy study moments.",
+    icon: "Clapperboard",
+    color: "#f472b6",
+    categories: getCategoriesForDiscipline("hong-kong-spawns").map((category) => category.id),
+    tags: ["hong-kong", "spawns", "media"],
+  },
+  {
     id: "roads",
     title: "Road Systems",
     description: "Lines, shoulders, shields, numbering, drive side, and road build.",

@@ -8,6 +8,9 @@ const slug = (value: string) =>
     .replace(/(^-|-$)/g, "");
 
 const categoryGroups: Record<string, string[]> = {
+  "hong-kong-spawns": [
+    "Spawn media slots",
+  ],
   roads: [
     "Road lines",
     "Lane markings",
