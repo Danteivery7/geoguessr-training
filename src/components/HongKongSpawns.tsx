@@ -1,6 +1,9 @@
 import { Clapperboard, FolderOpen, Plus } from "lucide-react";
 import { hongKongSpawnSlots } from "../data/hongKongSpawns";
 
+const isBundledMediaUrl = (url?: string) =>
+  Boolean(url && (url.startsWith("/") || url.startsWith("./") || url.startsWith("../") || url.startsWith("data:")));
+
 const HongKongSpawns = () => (
   <div className="space-y-5">
     <section className="map-texture glass rounded-lg p-6 sm:p-8">
@@ -25,7 +28,7 @@ const HongKongSpawns = () => (
       {hongKongSpawnSlots.map((slot) => (
         <article key={slot.id} className="glass hover-lift overflow-hidden rounded-lg">
           <div className="aspect-video border-b border-white/10 bg-grid bg-[length:32px_32px]">
-            {slot.mediaUrl ? (
+            {isBundledMediaUrl(slot.mediaUrl) ? (
               <video className="h-full w-full object-cover" controls preload="metadata" poster={slot.posterUrl}>
                 <source src={slot.mediaUrl} />
               </video>

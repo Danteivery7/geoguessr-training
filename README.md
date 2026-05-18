@@ -96,7 +96,7 @@ src/
 
 Starter visual cards use local generated training visuals unless a source is explicitly verified. These are built into the app bundle so the trainer does not need live image APIs at startup. Uncertain real-world clue claims are treated as starter training material and should be verified before publishing with real images.
 
-External image URLs are treated as source/attribution references, not as auto-loaded media. To display real media without network calls, place files in `public/assets/training/` and reference those local paths.
+External image/video URLs are treated as source/attribution references, not as auto-loaded media. To display real media without network calls, place files in `public/assets/training/` and reference those local paths.
 
 ## Network Behavior
 
