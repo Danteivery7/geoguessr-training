@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  background: #071016;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    linear-gradient(135deg, rgba(7, 16, 22, 0.94), rgba(13, 24, 32, 0.96)),
+    radial-gradient(circle at 10% 10%, rgba(53, 211, 159, 0.18), transparent 30%),
+    radial-gradient(circle at 90% 20%, rgba(57, 168, 255, 0.16), transparent 25%);
+  color: #eef7ff;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.map-texture {
+  position: relative;
+  overflow: hidden;
+}
+
+.map-texture::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    radial-gradient(circle at 12% 24%, rgba(53, 211, 159, 0.16), transparent 20%),
+    radial-gradient(circle at 82% 12%, rgba(57, 168, 255, 0.14), transparent 22%);
+  background-size: 42px 42px, 42px 42px, 100% 100%, 100% 100%;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.35));
+}
+
+.glass {
+  border: 1px solid rgba(180, 215, 255, 0.14);
+  background: linear-gradient(145deg, rgba(16, 32, 43, 0.82), rgba(12, 23, 32, 0.78));
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(18px);
+}
+
+.leaflet-container {
+  min-height: 520px;
+  width: 100%;
+  border-radius: 8px;
+  background: #10202b;
+}
+
+.leaflet-control-attribution {
+  color: #0d1820;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hover-lift {
+    transition:
+      transform 180ms ease,
+      border-color 180ms ease,
+      background 180ms ease;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-2px);
+  }
+}

@@ -1,0 +1,37 @@
+import type { AssetRecord } from "../types";
+
+export const sampleAssets: AssetRecord[] = [
+  {
+    id: "sample-placeholder-road-lines",
+    profileId: "system",
+    title: "Road line placeholder slot",
+    country: "Global",
+    category: "Road lines",
+    tags: ["road-lines", "starter", "image-needed"],
+    sourceType: "generatedPlaceholder",
+    attribution: "Generated placeholder by GeoMastery Trainer",
+    license: "Generated placeholder; replace with user-owned or openly licensed imagery",
+    clueExplanation: "Use this slot for a verified road line image later.",
+    correctAnswer: "Country or clue answer",
+    closeWrongAnswers: ["Close country 1", "Close country 2"],
+    difficulty: 2,
+    createdAt: new Date(0).toISOString(),
+  },
+  {
+    id: "sample-wikimedia-record",
+    profileId: "system",
+    title: "Wikimedia Commons source record template",
+    country: "Global",
+    category: "Open image source",
+    tags: ["wikimedia", "attribution-required"],
+    sourceType: "wikimedia",
+    attribution: "Fill in exact author/title from the Wikimedia Commons file page before publishing.",
+    license: "Fill in exact license from the Commons file page",
+    sourceUrl: "https://commons.wikimedia.org/wiki/Main_Page",
+    clueExplanation: "Template for adding a Commons image with correct attribution.",
+    correctAnswer: "Verified answer",
+    closeWrongAnswers: ["Close answer 1", "Close answer 2"],
+    difficulty: 1,
+    createdAt: new Date(0).toISOString(),
+  },
+];
