@@ -1,6 +1,6 @@
 # GeoMastery Trainer
 
-GeoMastery Trainer is a standalone GeoGuessr-style geography clue trainer. It does not connect to GeoGuessr, Google accounts, Google Maps scraping, GeoHints, Plonk It, or any outside user account. Progress is stored locally in browser save-slot profiles.
+GeoMastery Trainer is a standalone GeoGuessr-style geography clue trainer. It does not connect to GeoGuessr, Google accounts, Google Maps scraping, GeoHints, Plonk It, or any outside user account. Progress is stored locally in browser save-slot profiles, and starter trainer content is bundled directly into the static site.
 
 ## Run Locally
 
@@ -94,7 +94,9 @@ src/
 
 ## Content Note
 
-Starter visual cards use generated placeholders unless a source is explicitly verified. Uncertain real-world clue claims are treated as starter training material and should be verified before publishing with real images.
+Starter visual cards use local generated training visuals unless a source is explicitly verified. These are built into the app bundle so the trainer does not need live image APIs at startup. Uncertain real-world clue claims are treated as starter training material and should be verified before publishing with real images.
+
+External image URLs are treated as source/attribution references, not as auto-loaded media. To display real media without network calls, place files in `public/assets/training/` and reference those local paths.
 
 ## Network Behavior
 
