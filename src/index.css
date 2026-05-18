@@ -70,6 +70,27 @@ button {
   background: #10202b;
 }
 
+.offline-leaflet-map {
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.09) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.09) 1px, transparent 1px),
+    radial-gradient(ellipse at 23% 36%, rgba(53, 211, 159, 0.2), transparent 18%),
+    radial-gradient(ellipse at 51% 31%, rgba(57, 168, 255, 0.22), transparent 13%),
+    radial-gradient(ellipse at 65% 43%, rgba(245, 196, 81, 0.16), transparent 21%),
+    radial-gradient(ellipse at 54% 58%, rgba(255, 107, 107, 0.14), transparent 16%),
+    radial-gradient(ellipse at 80% 69%, rgba(192, 132, 252, 0.17), transparent 12%),
+    linear-gradient(145deg, #0b1a24, #10202b 45%, #071016);
+  background-size:
+    10% 100%,
+    100% 14.285%,
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    100% 100%;
+}
+
 .leaflet-control-attribution {
   color: #0d1820;
 }

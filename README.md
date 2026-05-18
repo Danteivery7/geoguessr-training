@@ -100,4 +100,4 @@ Starter visual cards use generated placeholders unless a source is explicitly ve
 
 The app is static and client-only. It has no backend, scheduled jobs, live GeoGuessr connection, scraping, serverless functions, or background API polling.
 
-The map trainer starts in offline static mode. OpenStreetMap tiles load only if a user manually enables them on the map page, and those requests happen in the browser rather than through Netlify/Vercel functions.
+The map trainer uses a local static coordinate surface and stored challenge coordinates. It makes no map tile requests, API requests, Netlify/Vercel function calls, or background refreshes.
