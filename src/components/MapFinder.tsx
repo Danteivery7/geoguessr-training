@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { CircleMarker, MapContainer, useMapEvents } from "react-leaflet";
+import { CircleMarker, ImageOverlay, MapContainer, useMapEvents } from "react-leaflet";
 import type { ProgressState, RoadFinderChallenge } from "../types";
 import { roadFinderChallenges } from "../data/roadFinderChallenges";
 import { kmToMiles } from "../utils/mapDistance";
@@ -12,6 +12,11 @@ type MapFinderProps = {
 type ClickCaptureProps = {
   onClick: (position: { lat: number; lng: number }) => void;
 };
+
+const worldMapBounds: [[number, number], [number, number]] = [
+  [-85, -180],
+  [85, 180],
+];
 
 const ClickCapture = ({ onClick }: ClickCaptureProps) => {
   useMapEvents({
@@ -83,7 +88,20 @@ const MapFinder = ({ progress }: MapFinderProps) => {
             </div>
           </div>
           <div className="relative overflow-hidden rounded-lg border border-white/10">
-            <MapContainer center={[20, 0]} zoom={2} scrollWheelZoom className="offline-leaflet-map z-0">
+            <MapContainer
+              center={[20, 0]}
+              zoom={2}
+              minZoom={2}
+              maxZoom={6}
+              maxBounds={worldMapBounds}
+              scrollWheelZoom
+              className="offline-leaflet-map z-0"
+            >
+              <ImageOverlay
+                url="/assets/training/maps/blank-world-map.svg"
+                bounds={worldMapBounds}
+                opacity={0.92}
+              />
               <ClickCapture onClick={setClicked} />
               {clicked ? <CircleMarker center={[clicked.lat, clicked.lng]} radius={9} pathOptions={{ color: "#35d39f" }} /> : null}
               {submitted ? (
@@ -100,7 +118,7 @@ const MapFinder = ({ progress }: MapFinderProps) => {
             </div>
           </div>
           <div className="mt-2 rounded border border-white/10 bg-white/[0.04] px-3 py-2 text-xs text-slate-400">
-            Offline static mode is active. This page makes no map tile requests, no API requests, and no Netlify function calls.
+            Offline static mode is active. The basemap is bundled in the site; no map tile requests, API requests, or Netlify function calls are made. Map source: Wikimedia Commons BlankMap-World.svg.
           </div>
           <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
             <div className="text-sm text-slate-400">

@@ -102,4 +102,4 @@ External image/video URLs are treated as source/attribution references, not as a
 
 The app is static and client-only. It has no backend, scheduled jobs, live GeoGuessr connection, scraping, serverless functions, or background API polling.
 
-The map trainer uses a local static coordinate surface and stored challenge coordinates. It makes no map tile requests, API requests, Netlify/Vercel function calls, or background refreshes.
+The map trainer uses a bundled local world map SVG plus stored challenge coordinates. It makes no map tile requests, API requests, Netlify/Vercel function calls, or background refreshes.
