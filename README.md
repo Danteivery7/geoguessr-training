@@ -95,3 +95,9 @@ src/
 ## Content Note
 
 Starter visual cards use generated placeholders unless a source is explicitly verified. Uncertain real-world clue claims are treated as starter training material and should be verified before publishing with real images.
+
+## Network Behavior
+
+The app is static and client-only. It has no backend, scheduled jobs, live GeoGuessr connection, scraping, serverless functions, or background API polling.
+
+The map trainer starts in offline static mode. OpenStreetMap tiles load only if a user manually enables them on the map page, and those requests happen in the browser rather than through Netlify/Vercel functions.

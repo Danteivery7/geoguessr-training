@@ -27,6 +27,7 @@ const MapFinder = ({ progress }: MapFinderProps) => {
   const [clicked, setClicked] = useState<{ lat: number; lng: number } | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [secondsRemaining] = useState(300);
+  const [onlineTilesEnabled, setOnlineTilesEnabled] = useState(false);
   const challenge = roadFinderChallenges.find((item) => item.id === challengeId) ?? roadFinderChallenges[0];
   const result = useMemo(
     () => (clicked && submitted ? scoreMapChallenge(challenge, clicked, secondsRemaining) : null),
@@ -75,19 +76,37 @@ const MapFinder = ({ progress }: MapFinderProps) => {
               <h2 className="font-display text-3xl font-bold">{challenge.title}</h2>
               <p className="text-slate-300">{challenge.prompt}</p>
             </div>
-            <div className="rounded bg-white/10 px-3 py-2 text-sm text-slate-300">5:00 target window</div>
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setOnlineTilesEnabled((current) => !current)}
+                className={`rounded px-3 py-2 text-sm font-semibold ${
+                  onlineTilesEnabled ? "bg-ocean text-night" : "border border-white/10 text-slate-200"
+                }`}
+              >
+                {onlineTilesEnabled ? "OSM tiles on" : "Load OSM tiles"}
+              </button>
+              <div className="rounded bg-white/10 px-3 py-2 text-sm text-slate-300">5:00 target window</div>
+            </div>
           </div>
           <MapContainer center={[20, 0]} zoom={2} scrollWheelZoom className="z-0">
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
+            {onlineTilesEnabled ? (
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+            ) : null}
             <ClickCapture onClick={setClicked} />
             {clicked ? <CircleMarker center={[clicked.lat, clicked.lng]} radius={9} pathOptions={{ color: "#35d39f" }} /> : null}
             {submitted ? (
               <CircleMarker center={[challenge.target.lat, challenge.target.lng]} radius={12} pathOptions={{ color: "#ff6b6b" }} />
             ) : null}
           </MapContainer>
+          <div className="mt-2 rounded border border-white/10 bg-white/[0.04] px-3 py-2 text-xs text-slate-400">
+            {onlineTilesEnabled
+              ? "OpenStreetMap tiles load only in your browser while this mode is on; no Netlify functions or app credits are used."
+              : "Offline static mode is active. No external map tile requests are made; click the blank map area to place guesses."}
+          </div>
           <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
             <div className="text-sm text-slate-400">
               {clicked ? `Pinned ${clicked.lat.toFixed(2)}, ${clicked.lng.toFixed(2)}` : "Click the map to place your guess."}
