@@ -115,7 +115,7 @@ const StaticTrainingVisual = ({ source, title }: { source?: ImageSource; title: 
       <div className="relative z-10 flex min-h-[230px] flex-col justify-between p-5">
         <div className="flex items-center justify-between">
           <span className="rounded bg-night/75 px-2 py-1 text-[10px] uppercase tracking-[0.18em] text-slate-200">
-            {source?.country ?? "Global"}
+            training visual
           </span>
           <span className="rounded bg-night/75 px-2 py-1 text-xs text-slate-300">static card</span>
         </div>

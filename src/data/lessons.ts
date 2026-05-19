@@ -5,6 +5,7 @@ import { makePlaceholderSource } from "./sourceRegistry";
 
 const focusByDiscipline: Record<string, string[]> = {
   roads: ["paint rhythm", "lane edge", "shield shape", "surface quality", "roadside spacing"],
+  "area-codes": ["country code prefix", "shared +1 traps", "regional number clusters", "country-page confirmation", "close-answer recall"],
   signs: ["shape", "color system", "post style", "reflector placement", "local wording"],
   language: ["script family", "diacritics", "word endings", "domain clues", "close-language traps"],
   vehicles: ["drive side", "plates", "coverage texture", "car/camera clues", "traffic mix"],
@@ -18,6 +19,7 @@ const focusByDiscipline: Record<string, string[]> = {
 
 const relatedByDiscipline: Record<string, string[]> = {
   roads: ["United States", "Canada", "Australia", "South Africa"],
+  "area-codes": ["Spain", "Portugal", "Brazil", "South Korea"],
   signs: ["Czechia", "Slovakia", "France", "Germany"],
   language: ["Czechia", "Slovakia", "Slovenia", "Croatia"],
   vehicles: ["Japan", "South Korea", "Kenya", "Ghana"],

@@ -1,4 +1,5 @@
 import type { AnswerChoice, Question, QuestionType } from "../types";
+import { countries } from "./countries";
 import { makePlaceholderSource } from "./sourceRegistry";
 
 type Seed = {
@@ -87,7 +88,7 @@ const languageSeeds: Question[] = [
 
   return toQuestion(
     {
-      type: index % 5 === 0 ? "languageImage" : "languageText",
+      type: "languageImage",
       disciplineId: "language",
       categoryId: index % 3 === 0 ? "language-diacritics" : index % 3 === 1 ? "language-domain-endings" : "language-european-language-comparison",
       difficulty: ((index % 5) + 1) as Seed["difficulty"],
@@ -389,6 +390,119 @@ const bossNames = [
   )
 );
 
+const countryNameByCode = new Map(countries.map((country) => [country.name, country]));
+
+const closeCountriesFor = (countryName: string) => {
+  const country = countryNameByCode.get(countryName);
+  if (!country) return countries.filter((candidate) => candidate.name !== countryName).slice(0, 3);
+
+  const confusables = country.confusableCountries
+    .map((name) => countryNameByCode.get(name))
+    .filter((candidate): candidate is (typeof countries)[number] => Boolean(candidate));
+  const regional = countries.filter(
+    (candidate) => candidate.region === country.region && candidate.name !== country.name && candidate.phoneCode !== country.phoneCode
+  );
+  const global = countries.filter((candidate) => candidate.name !== country.name && candidate.phoneCode !== country.phoneCode);
+
+  return [...confusables, ...regional, ...global].filter(
+    (candidate, index, list) => list.findIndex((item) => item.name === candidate.name) === index
+  );
+};
+
+const areaCodeCountries = countries.filter((country) => country.phoneCode !== "+1").slice(0, 36);
+
+const areaCodeQuestions: Question[] = areaCodeCountries.map((country, index) => {
+  const closeCountries = closeCountriesFor(country.name);
+  const closeNames = Array.from(new Set(closeCountries.map((candidate) => candidate.name))).slice(0, 2);
+  const closeCodes = Array.from(
+    new Set(closeCountries.map((candidate) => candidate.phoneCode).filter((code) => code !== country.phoneCode))
+  ).slice(0, 2);
+  const fallbackCodes = countries
+    .map((candidate) => candidate.phoneCode)
+    .filter((code) => code !== country.phoneCode && !closeCodes.includes(code));
+  while (closeCodes.length < 2 && fallbackCodes.length) {
+    closeCodes.push(fallbackCodes.shift() ?? "+999");
+  }
+  const wrongCountry = countries.find(
+    (candidate) =>
+      candidate.region !== country.region &&
+      candidate.phoneCode !== country.phoneCode &&
+      !closeNames.includes(candidate.name)
+  ) ?? countries[0];
+  const wrongCode =
+    countries.find(
+      (candidate) =>
+        candidate.region !== country.region &&
+        candidate.phoneCode !== country.phoneCode &&
+        !closeCodes.includes(candidate.phoneCode)
+    )?.phoneCode ?? "+999";
+  const askForCode = index % 2 === 0;
+
+  return toQuestion(
+    {
+      type: "multipleChoiceText",
+      disciplineId: "area-codes",
+      categoryId: index % 3 === 0 ? "area-codes-country-calling-codes" : index % 3 === 1 ? "area-codes-shared-calling-code-traps" : "area-codes-regional-dialing-patterns",
+      difficulty: ((index % 5) + 1) as Seed["difficulty"],
+      prompt: askForCode
+        ? `Which calling code belongs to ${country.name}?`
+        : `Which country uses the calling code ${country.phoneCode}?`,
+      correct: askForCode ? country.phoneCode : country.name,
+      close: askForCode ? closeCodes : closeNames,
+      wrong: askForCode ? wrongCode : wrongCountry.name,
+      explanation: askForCode ? `${country.name} uses ${country.phoneCode}.` : `${country.phoneCode} is the calling code for ${country.name}.`,
+      giveaway: askForCode ? `${country.name} profile code: ${country.phoneCode}` : `Calling code ${country.phoneCode}.`,
+      commonMistake: "Nearby or confusable countries often have similar-looking phone-code ranges, so drill them as close answers.",
+      relatedCountries: closeNames.concat(country.name),
+      tags: ["area-codes", "calling-codes", "phone-codes", country.region.toLowerCase()],
+      points: 100 + ((index % 5) + 1) * 50,
+    },
+    index,
+    "area"
+  );
+});
+
+const sharedAreaCodeQuestions: Question[] = [
+  toQuestion(
+    {
+      type: "multipleChoiceText",
+      disciplineId: "area-codes",
+      categoryId: "area-codes-shared-calling-code-traps",
+      difficulty: 2,
+      prompt: "Which answer is a correct +1 calling-code trap?",
+      correct: "United States and Canada",
+      close: ["United Kingdom and Ireland", "Australia and New Zealand"],
+      wrong: "Spain and Portugal",
+      explanation: "The United States and Canada both use +1, so use other clues before committing.",
+      giveaway: "+1 is shared in the North American Numbering Plan.",
+      commonMistake: "Treating +1 as only the United States.",
+      relatedCountries: ["United States", "Canada"],
+      tags: ["area-codes", "calling-codes", "shared-code"],
+    },
+    0,
+    "area-shared"
+  ),
+  toQuestion(
+    {
+      type: "multipleChoiceText",
+      disciplineId: "area-codes",
+      categoryId: "area-codes-country-calling-codes",
+      difficulty: 1,
+      prompt: "Which calling code belongs to Japan?",
+      correct: "+81",
+      close: ["+82", "+86"],
+      wrong: "+351",
+      explanation: "Japan is +81; South Korea is the close +82 trap.",
+      giveaway: "+81 for Japan.",
+      commonMistake: "Mixing Japan +81 with South Korea +82.",
+      relatedCountries: ["Japan", "South Korea", "China"],
+      tags: ["area-codes", "east-asia", "calling-codes"],
+    },
+    1,
+    "area-shared"
+  ),
+];
+
 const specialQuestions: Question[] = [
   toQuestion(
     {
@@ -477,6 +591,8 @@ export const questions: Question[] = [
   ...metaSeeds,
   ...visualSeeds,
   ...bossNames,
+  ...areaCodeQuestions,
+  ...sharedAreaCodeQuestions,
   ...specialQuestions,
 ];
 

@@ -11,6 +11,11 @@ const categoryGroups: Record<string, string[]> = {
   "hong-kong-spawns": [
     "Spawn media slots",
   ],
+  "area-codes": [
+    "Country calling codes",
+    "Shared calling code traps",
+    "Regional dialing patterns",
+  ],
   roads: [
     "Road lines",
     "Lane markings",

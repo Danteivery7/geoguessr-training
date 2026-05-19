@@ -11,6 +11,7 @@ import {
   LayoutDashboard,
   Map,
   Menu,
+  Phone,
   Route,
   Settings as SettingsIcon,
   Signpost,
@@ -41,6 +42,7 @@ import Settings from "./components/Settings";
 type RouteId =
   | "dashboard"
   | "hong-kong-spawns"
+  | "area-codes"
   | "disciplines"
   | "world-map"
   | "road-signs"
@@ -56,6 +58,7 @@ type RouteId =
 const navItems: Array<{ id: RouteId; label: string; icon: typeof Compass }> = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { id: "hong-kong-spawns", label: "Hong Kong Spawns", icon: Clapperboard },
+  { id: "area-codes", label: "Area Codes", icon: Phone },
   { id: "disciplines", label: "Disciplines", icon: Compass },
   { id: "world-map", label: "World Map Trainer", icon: Map },
   { id: "road-signs", label: "Road & Sign Finder", icon: Signpost },
@@ -184,6 +187,22 @@ const App = () => {
     }
 
     if (route === "hong-kong-spawns") return <HongKongSpawns />;
+
+    if (route === "area-codes") {
+      return (
+        <TrainingPanel
+          title="Area Codes"
+          eyebrow="Phone-code recall"
+          body="Quick drills for country calling codes, shared-code traps, and regional number patterns."
+          onStartQuiz={startQuiz}
+          actions={[
+            { label: "Country calling code warmup", questions: getQuestionsByFilters({ disciplineId: "area-codes", count: 12, closeCountryMode: true }, customQuestionsPool) },
+            { label: "Shared-code traps", questions: getQuestionsByFilters({ disciplineId: "area-codes", categoryId: "area-codes-shared-calling-code-traps", count: 10, closeCountryMode: true }, customQuestionsPool) },
+            { label: "Area Codes Boss", questions: getQuestionsByFilters({ disciplineId: "area-codes", count: 20, closeCountryMode: true }, customQuestionsPool) },
+          ]}
+        />
+      );
+    }
 
     if (route === "disciplines") {
       return (

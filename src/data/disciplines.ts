@@ -12,6 +12,15 @@ export const disciplines: Discipline[] = [
     tags: ["hong-kong", "spawns", "media"],
   },
   {
+    id: "area-codes",
+    title: "Area Codes",
+    description: "Country calling codes, shared-code traps, and quick number recognition.",
+    icon: "Phone",
+    color: "#22d3ee",
+    categories: getCategoriesForDiscipline("area-codes").map((category) => category.id),
+    tags: ["calling-codes", "phone-codes", "numbers"],
+  },
+  {
     id: "roads",
     title: "Road Systems",
     description: "Lines, shoulders, shields, numbering, drive side, and road build.",
