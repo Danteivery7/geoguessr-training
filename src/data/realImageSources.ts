@@ -17,7 +17,7 @@ export const realTrainingImages: RealTrainingImage[] = [
     license: "Public domain / license listed on Commons file page",
     country: "United States",
     clueTags: ["roads", "route-shields", "road-signs", "highway-signs", "map-finder"],
-    matchCountries: ["United States", "Canada"],
+    matchCountries: ["United States"],
     matchTags: ["roads", "route", "shield", "highway", "interstate", "road-signs", "map-finder"],
     priority: 95,
     verificationStatus: "verified",
@@ -32,7 +32,7 @@ export const realTrainingImages: RealTrainingImage[] = [
     license: "CC BY-SA 4.0",
     country: "Japan",
     clueTags: ["language", "japanese", "signs", "urban", "city-vibe", "architecture"],
-    matchCountries: ["Japan", "South Korea"],
+    matchCountries: ["Japan"],
     matchTags: ["japan", "japanese", "language", "script", "urban", "city", "visual", "sign"],
     priority: 90,
     verificationStatus: "verified",
@@ -47,7 +47,7 @@ export const realTrainingImages: RealTrainingImage[] = [
     license: "Open license listed on Commons file page",
     country: "Japan",
     clueTags: ["language", "visual", "street-signs", "city-vibe", "urban"],
-    matchCountries: ["Japan", "South Korea", "Hong Kong"],
+    matchCountries: ["Japan"],
     matchTags: ["language", "street", "sign", "visual", "city-vibe", "urban", "image"],
     priority: 80,
     verificationStatus: "verified",
@@ -61,7 +61,7 @@ export const realTrainingImages: RealTrainingImage[] = [
     license: "Open license listed on Commons file page",
     country: "Greece",
     clueTags: ["language", "greek", "script", "europe"],
-    matchCountries: ["Greece", "Turkey"],
+    matchCountries: ["Greece"],
     matchTags: ["greek", "greece", "language", "script", "european-language-comparison"],
     priority: 70,
     verificationStatus: "verified",
@@ -75,7 +75,7 @@ export const realTrainingImages: RealTrainingImage[] = [
     license: "Open license listed on Commons file page",
     country: "Netherlands",
     clueTags: ["architecture", "urban", "netherlands", "city", "canals"],
-    matchCountries: ["Netherlands", "Denmark"],
+    matchCountries: ["Netherlands"],
     matchTags: ["architecture", "urban", "city", "netherlands", "canal", "street"],
     priority: 65,
     verificationStatus: "verified",
@@ -98,17 +98,40 @@ export const realTrainingImages: RealTrainingImage[] = [
 
 const normalize = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 
+const genericTags = new Set([
+  "architecture",
+  "city",
+  "image",
+  "language",
+  "map",
+  "nature",
+  "road",
+  "roads",
+  "script",
+  "sign",
+  "signs",
+  "street",
+  "urban",
+  "visual",
+]);
+
 export const resolveRealImageSource = (source: ImageSource | undefined, title = ""): ImageSource | undefined => {
   if (!source || source.sourceType !== "generatedPlaceholder") return source;
 
   const haystack = normalize(`${title} ${source.country} ${source.clueTags.join(" ")}`);
   const scored = realTrainingImages
     .map((image) => {
-      const countryScore = image.matchCountries.some((country) => haystack.includes(normalize(country))) ? 80 : 0;
-      const tagScore = image.matchTags.reduce((score, tag) => score + (haystack.includes(normalize(tag)) ? 10 : 0), 0);
-      return { image, score: countryScore + tagScore + image.priority };
+      const countryScore = image.matchCountries.some((country) => haystack.includes(normalize(country))) ? 100 : 0;
+      const specificTagScore = image.matchTags.reduce((score, tag) => {
+        const normalized = normalize(tag);
+        if (genericTags.has(normalized)) return score;
+        return score + (haystack.includes(normalized) ? 20 : 0);
+      }, 0);
+      const matched = countryScore > 0 || specificTagScore > 0;
+      return { image, matched, score: countryScore + specificTagScore + image.priority };
     })
+    .filter((item) => item.matched)
     .sort((a, b) => b.score - a.score);
 
-  return scored[0]?.image ?? realTrainingImages[0];
+  return scored[0]?.image ?? source;
 };

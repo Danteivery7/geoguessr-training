@@ -143,6 +143,6 @@ export const getQuestionVisualTitle = (question: Question) => {
 };
 
 export const getTextSample = (question: Question) => {
-  if (question.type !== "languageText") return null;
+  if (question.type !== "languageText" && question.type !== "languageImage") return null;
   return languageSamples[question.correctAnswer] ?? null;
 };
