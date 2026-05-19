@@ -94,9 +94,13 @@ src/
 
 ## Content Note
 
-Starter visual cards use local generated training visuals unless a source is explicitly verified. These are built into the app bundle so the trainer does not need live image APIs at startup. Uncertain real-world clue claims are treated as starter training material and should be verified before publishing with real images.
+Starter visual cards prefer bundled real training images when a matching verified source exists, then fall back to local generated training visuals. These are built into the app bundle so the trainer does not need live image APIs at startup. Uncertain real-world clue claims are treated as starter training material and should be verified before publishing with real images.
 
 External image/video URLs are treated as source/attribution references, not as auto-loaded media. To display real media without network calls, place files in `public/assets/training/` and reference those local paths.
+
+## Future Content Pass
+
+Next planned pass: keep expanding the bundled image library with more relevant, working, openly licensed country/sign/road/language photos, especially for sparse country duels. New images should stay local under `public/assets/training/` with attribution records in `src/data/realImageSources.ts` or `src/data/openverseImageSources.json`.
 
 ## Network Behavior
 
